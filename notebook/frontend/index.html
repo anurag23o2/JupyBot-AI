@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>JupyBot Gen AI URL Processor</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: {
+              50: '#f0f9ff',
+              100: '#e0f2fe',
+              200: '#bae6fd',
+              300: '#7dd3fc',
+              400: '#38bdf8',
+              500: '#0ea5e9',
+              600: '#0284c7',
+              700: '#0369a1',
+              800: '#075985',
+              900: '#0c4a6e',
+            }
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-gray-50">
+  <div id="root"></div>
+  <script src="https://cdn.jsdelivr.net/npm/react@18.2.0/umd/react.development.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/react-dom@18.2.0/umd/react-dom.development.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/axios@1.7.7/dist/axios.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@babel/standalone@7.25.6/babel.min.js"></script>
+  <script type="text/babel">
+    const App = () => {
+      const [url1, setUrl1] = React.useState("");
+      const [url2, setUrl2] = React.useState("");
+      const [url3, setUrl3] = React.useState("");
+      const [question, setQuestion] = React.useState("");
+      const [result, setResult] = React.useState(null);
+      const [error, setError] = React.useState(null);
+      const [loading, setLoading] = React.useState(false);
+
+      const handleSubmit = async (e) => {
+        e.preventDefault();
+        setLoading(true);
+        setError(null);
+        setResult(null);
+
+        // Prepare payload (only include non-empty URLs)
+        const urls = [url1, url2, url3].filter(url => url.trim() !== "");
+        if (urls.length === 0 && !question.trim()) {
+          setError("Please provide at least one URL or a question.");
+          setLoading(false);
+          return;
+        }
+
+        try {
+          const response = await axios.post("http://localhost:3000/process-url", {
+            urls,
+            question: question.trim() || "Summarize the content of the provided URLs."
+          });
+          setResult(response.data.result);
+        } catch (err) {
+          setError(err.response?.data?.detail || "Failed to process input");
+        } finally {
+          setLoading(false);
+        }
+      };
+
+      return (
+        <div className="min-h-screen flex flex-col">
+          {/* Header */}
+          <header className="bg-white shadow-sm">
+            <div className="max-w-7xl mx-auto px-4 py-6 sm:px-6 lg:px-8 flex items-center">
+              <div className="flex items-center">
+                <div className="bg-primary-600 text-white p-2 rounded-lg">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                  </svg>
+                </div>
+                <h1 className="ml-3 text-2xl font-bold text-gray-900">JupyBot AI URLs Processor</h1>
+              </div>
+            </div>
+          </header>
+
+          {/* Main Content */}
+          <main className="flex-grow">
+            <div className="max-w-3xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
+              <div className="bg-white shadow rounded-lg overflow-hidden">
+                {/* Form Section */}
+                <div className="p-6 border-b border-gray-200">
+                  <h2 className="text-lg font-medium text-gray-900">Process URLs & Content</h2>
+                  <p className="mt-1 text-sm text-gray-500">Enter up to 3 URLs and a question to analyze the content.</p>
+                  
+                  <form onSubmit={handleSubmit} className="mt-6 space-y-6">
+                    <div className="space-y-4">
+                      <div>
+                        <label htmlFor="url1" className="block text-sm font-medium text-gray-700">
+                          URL 1
+                        </label>
+                        <div className="mt-1 relative rounded-md shadow-sm">
+                          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <span className="text-gray-500 sm:text-sm">
+                              <i className="fas fa-link"></i>
+                            </span>
+                          </div>
+                          <input
+                            type="url"
+                            id="url1"
+                            value={url1}
+                            onChange={(e) => setUrl1(e.target.value)}
+                            className="focus:ring-primary-500 focus:border-primary-500 block w-full pl-10 pr-3 py-2 border-gray-300 rounded-md"
+                            placeholder="https://example.com"
+                          />
+                        </div>
+                      </div>
+
+                      <div>
+                        <label htmlFor="url2" className="block text-sm font-medium text-gray-700">
+                          URL 2
+                        </label>
+                        <div className="mt-1 relative rounded-md shadow-sm">
+                          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <span className="text-gray-500 sm:text-sm">
+                              <i className="fas fa-link"></i>
+                            </span>
+                          </div>
+                          <input
+                            type="url"
+                            id="url2"
+                            value={url2}
+                            onChange={(e) => setUrl2(e.target.value)}
+                            className="focus:ring-primary-500 focus:border-primary-500 block w-full pl-10 pr-3 py-2 border-gray-300 rounded-md"
+                            placeholder="https://example.com"
+                          />
+                        </div>
+                      </div>
+
+                      <div>
+                        <label htmlFor="url3" className="block text-sm font-medium text-gray-700">
+                          URL 3
+                        </label>
+                        <div className="mt-1 relative rounded-md shadow-sm">
+                          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <span className="text-gray-500 sm:text-sm">
+                              <i className="fas fa-link"></i>
+                            </span>
+                          </div>
+                          <input
+                            type="url"
+                            id="url3"
+                            value={url3}
+                            onChange={(e) => setUrl3(e.target.value)}
+                            className="focus:ring-primary-500 focus:border-primary-500 block w-full pl-10 pr-3 py-2 border-gray-300 rounded-md"
+                            placeholder="https://example.com"
+                          />
+                        </div>
+                      </div>
+                    </div>
+
+                    <div>
+                      <label htmlFor="question" className="block text-sm font-medium text-gray-700">
+                        Your Question
+                      </label>
+                      <div className="mt-1">
+                        <textarea
+                          id="question"
+                          value={question}
+                          onChange={(e) => setQuestion(e.target.value)}
+                          className="shadow-sm focus:ring-primary-500 focus:border-primary-500 block w-full sm:text-sm border-gray-300 rounded-md"
+                          placeholder="e.g., What is the main topic of these URLs? Summarize the key points."
+                          rows={4}
+                        />
+                      </div>
+                      <p className="mt-2 text-sm text-gray-500">
+                        Leave blank for a general summary.
+                      </p>
+                    </div>
+
+                    <div className="flex justify-end">
+                      <button
+                        type="submit"
+                        disabled={loading}
+                        className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 disabled:bg-primary-400 disabled:cursor-not-allowed"
+                      >
+                        {loading ? (
+                          <>
+                            <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                              <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                            </svg>
+                            Processing...
+                          </>
+                        ) : (
+                          <>
+                            <svg className="-ml-1 mr-3 h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" />
+                            </svg>
+                            Analyze Content
+                          </>
+                        )}
+                      </button>
+                    </div>
+                  </form>
+                </div>
+
+                {/* Results Section */}
+                <div className="bg-gray-50 px-6 py-4">
+                  {error && (
+                    <div className="rounded-md bg-red-50 p-4 mb-4">
+                      <div className="flex">
+                        <div className="flex-shrink-0">
+                          <svg className="h-5 w-5 text-red-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                            <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+                          </svg>
+                        </div>
+                        <div className="ml-3">
+                          <h3 className="text-sm font-medium text-red-800">Error</h3>
+                          <div className="mt-2 text-sm text-red-700">
+                            <p>{error}</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {result && (
+                    <div className="rounded-md bg-green-50 p-4">
+                      <div className="flex">
+                        <div className="flex-shrink-0">
+                          <svg className="h-5 w-5 text-green-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                            <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                          </svg>
+                        </div>
+                        <div className="ml-3">
+                          <h3 className="text-sm font-medium text-green-800">Analysis Result</h3>
+                          <div className="mt-2 text-sm text-green-700">
+                            <div className="prose prose-sm max-w-none">
+                              <p className="whitespace-pre-wrap">{result}</p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+          </main>
+
+          {/* Footer */}
+          <footer className="bg-white border-t border-gray-200">
+            <div className="max-w-7xl mx-auto px-4 py-4 sm:px-6 lg:px-8">
+              <p className="text-center text-sm text-gray-500">
+                &copy; {new Date().getFullYear()} JupyBot AI Processor. All rights reserved.
+              </p>
+            </div>
+          </footer>
+        </div>
+      );
+    };
+
+    const root = ReactDOM.createRoot(document.getElementById("root"));
+    root.render(<App />);
+  </script>
+</body>
+</html>
