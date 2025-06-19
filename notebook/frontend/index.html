@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>JupyBot AI - Advanced URL Content Processor</title>
+  <title>JupyBot Gen AI URL Analyzer</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <script>
@@ -22,120 +22,14 @@
               700: '#0369a1',
               800: '#075985',
               900: '#0c4a6e',
-            },
-            dark: {
-              50: '#f8fafc',
-              100: '#f1f5f9',
-              200: '#e2e8f0',
-              300: '#cbd5e1',
-              400: '#94a3b8',
-              500: '#64748b',
-              600: '#475569',
-              700: '#334155',
-              800: '#1e293b',
-              900: '#0f172a',
-            }
-          },
-          fontFamily: {
-            'sans': ['Inter', 'system-ui', 'sans-serif'],
-          },
-          animation: {
-            'gradient': 'gradient 15s ease infinite',
-            'float': 'float 6s ease-in-out infinite',
-            'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-            'slide-up': 'slideUp 0.5s ease-out',
-            'slide-down': 'slideDown 0.5s ease-out',
-            'bounce-slow': 'bounce 3s infinite',
-            'glow': 'glow 2s ease-in-out infinite alternate',
-          },
-          keyframes: {
-            gradient: {
-              '0%, 100%': {
-                'background-size': '200% 200%',
-                'background-position': 'left center'
-              },
-              '50%': {
-                'background-size': '200% 200%',
-                'background-position': 'right center'
-              }
-            },
-            float: {
-              '0%, 100%': { transform: 'translateY(0px)' },
-              '50%': { transform: 'translateY(-20px)' }
-            },
-            slideUp: {
-              '0%': { transform: 'translateY(100%)', opacity: '0' },
-              '100%': { transform: 'translateY(0)', opacity: '1' }
-            },
-            slideDown: {
-              '0%': { transform: 'translateY(-100%)', opacity: '0' },
-              '100%': { transform: 'translateY(0)', opacity: '1' }
-            },
-            glow: {
-              '0%': { boxShadow: '0 0 20px rgba(14, 165, 233, 0.3)' },
-              '100%': { boxShadow: '0 0 40px rgba(14, 165, 233, 0.6)' }
             }
           }
         }
       }
     }
   </script>
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
-    
-    .gradient-bg {
-      background: linear-gradient(-45deg, #667eea, #764ba2, #f093fb, #f5576c, #4facfe, #00f2fe);
-      background-size: 400% 400%;
-      animation: gradient 15s ease infinite;
-    }
-    
-    .glass-effect {
-      backdrop-filter: blur(20px);
-      background: rgba(255, 255, 255, 0.1);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-    }
-    
-    .card-hover {
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-    
-    .card-hover:hover {
-      transform: translateY(-8px);
-      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-    }
-    
-    .typing-animation::after {
-      content: '|';
-      animation: blink 1s infinite;
-    }
-    
-    @keyframes blink {
-      0%, 50% { opacity: 1; }
-      51%, 100% { opacity: 0; }
-    }
-    
-    .parallax-bg {
-      background-attachment: fixed;
-      background-position: center;
-      background-repeat: no-repeat;
-      background-size: cover;
-    }
-    
-    .pulse-ring {
-      animation: pulse-ring 1.25s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
-    }
-    
-    @keyframes pulse-ring {
-      0% {
-        transform: scale(.33);
-      }
-      80%, 100% {
-        opacity: 0;
-      }
-    }
-  </style>
 </head>
-<body class="bg-gray-50 font-sans">
+<body class="bg-gray-50">
   <div id="root"></div>
   <script src="https://cdn.jsdelivr.net/npm/react@18.2.0/umd/react.development.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/react-dom@18.2.0/umd/react-dom.development.js"></script>
@@ -150,33 +44,6 @@
       const [result, setResult] = React.useState(null);
       const [error, setError] = React.useState(null);
       const [loading, setLoading] = React.useState(false);
-      const [darkMode, setDarkMode] = React.useState(false);
-      const [stats, setStats] = React.useState({
-        processed: 0,
-        saved: 0,
-        accuracy: 0
-      });
-      const [showWelcome, setShowWelcome] = React.useState(true);
-
-      // Simulate stats animation
-      React.useEffect(() => {
-        const timer = setTimeout(() => {
-          setStats({
-            processed: Math.floor(Math.random() * 10000) + 5000,
-            saved: Math.floor(Math.random() * 500) + 100,
-            accuracy: 98.5
-          });
-        }, 1000);
-        return () => clearTimeout(timer);
-      }, []);
-
-      // Auto-hide welcome message
-      React.useEffect(() => {
-        const timer = setTimeout(() => {
-          setShowWelcome(false);
-        }, 5000);
-        return () => clearTimeout(timer);
-      }, []);
 
       const handleSubmit = async (e) => {
         e.preventDefault();
@@ -184,362 +51,132 @@
         setError(null);
         setResult(null);
 
-        const urls = [url1, url2, url3].filter(url => url.trim() !== "");
-        if (urls.length === 0 && !question.trim()) {
+        const urls = [url1, url2, url3].filter((url) => url.trim() !== "");
+        const userQuestion = question.trim();
+
+        if (urls.length === 0 && !userQuestion) {
           setError("Please provide at least one URL or a question.");
           setLoading(false);
           return;
         }
 
+        const payload = {
+          urls,
+          question: userQuestion || "Summarize the content of the provided URLs."
+        };
+
+        console.log("Sending payload to backend:", payload);
+
         try {
-          // Simulate API call with realistic delay
-          await new Promise(resolve => setTimeout(resolve, 2000));
-          
-          // Mock response for demonstration
-          const mockResponse = `Based on the analysis of ${urls.length} URL(s), here's a comprehensive summary:
-
-Key Findings:
-• Content analysis reveals trending topics in AI and technology
-• Cross-referencing multiple sources provides comprehensive insights
-• Structured data extraction successful with 99.2% accuracy
-• Sentiment analysis shows positive outlook on emerging technologies
-
-Recommendations:
-• Further research recommended on identified trends
-• Consider bookmarking these resources for future reference
-• Integration possibilities identified for workflow optimization
-
-This analysis was completed using advanced NLP processing and machine learning algorithms to ensure maximum accuracy and relevance.`;
-
-          setResult(mockResponse);
-          
-          // Update stats
-          setStats(prev => ({
-            ...prev,
-            processed: prev.processed + 1
-          }));
-          
+          const response = await axios.post(
+            "https://jupybot-ai.onrender.com/process-url",
+            payload,
+            {
+              headers: {
+                "Content-Type": "application/json"
+              }
+            }
+          );
+          console.log("Response from backend:", response.data);
+          setResult(response.data.result);
         } catch (err) {
-          setError(err.response?.data?.detail || "Failed to process input. Please try again.");
+          console.error("Error during request:", err);
+          setError(err.response?.data?.detail || "Failed to process input");
         } finally {
           setLoading(false);
         }
       };
 
-      const clearForm = () => {
-        setUrl1("");
-        setUrl2("");
-        setUrl3("");
-        setQuestion("");
-        setResult(null);
-        setError(null);
-      };
-
-      const StatCard = ({ icon, value, label, color = "primary" }) => (
-        <div className={`bg-white p-6 rounded-xl shadow-lg card-hover border-l-4 border-${color}-500`}>
-          <div className="flex items-center">
-            <div className={`p-3 rounded-full bg-${color}-100 text-${color}-600`}>
-              <i className={`${icon} text-xl`}></i>
-            </div>
-            <div className="ml-4">
-              <p className="text-2xl font-bold text-gray-900">{value.toLocaleString()}</p>
-              <p className="text-sm text-gray-600">{label}</p>
-            </div>
-          </div>
-        </div>
-      );
-
-      const FeatureCard = ({ icon, title, description }) => (
-        <div className="bg-white p-6 rounded-xl shadow-lg card-hover">
-          <div className="flex items-center mb-4">
-            <div className="p-3 rounded-full bg-primary-100 text-primary-600">
-              <i className={`${icon} text-xl`}></i>
-            </div>
-            <h3 className="ml-3 text-lg font-semibold text-gray-900">{title}</h3>
-          </div>
-          <p className="text-gray-600">{description}</p>
-        </div>
-      );
-
       return (
-        <div className={`min-h-screen transition-all duration-500 ${darkMode ? 'bg-dark-900' : 'bg-gray-50'}`}>
-          {/* Animated Background */}
-          <div className="fixed inset-0 overflow-hidden pointer-events-none">
-            <div className="absolute -top-40 -right-40 w-80 h-80 bg-primary-300 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-float"></div>
-            <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-purple-300 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-float" style={{animationDelay: '2s'}}></div>
-            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-80 h-80 bg-pink-300 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-float" style={{animationDelay: '4s'}}></div>
-          </div>
-
-          {/* Welcome Banner */}
-          {showWelcome && (
-            <div className="fixed top-4 left-1/2 transform -translate-x-1/2 z-50 animate-slide-down">
-              <div className="bg-gradient-to-r from-primary-500 to-purple-600 text-white px-6 py-3 rounded-full shadow-lg">
-                <div className="flex items-center">
-                  <i className="fas fa-sparkles mr-2"></i>
-                  <span className="text-sm font-medium">Welcome to JupyBot AI - Your Smart Content Processor!</span>
-                  <button onClick={() => setShowWelcome(false)} className="ml-3 text-white hover:text-gray-200">
-                    <i className="fas fa-times"></i>
-                  </button>
+        <div className="min-h-screen flex flex-col">
+          <header className="bg-white shadow-sm">
+            <div className="max-w-7xl mx-auto px-4 py-6 sm:px-6 lg:px-8 flex items-center">
+              <div className="flex items-center">
+                <div className="bg-primary-600 text-white p-2 rounded-lg">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                  </svg>
                 </div>
-              </div>
-            </div>
-          )}
-
-          {/* Header */}
-          <header className={`${darkMode ? 'bg-dark-800' : 'bg-white'} shadow-lg relative overflow-hidden`}>
-            <div className="absolute inset-0 gradient-bg opacity-10"></div>
-            <div className="relative max-w-7xl mx-auto px-4 py-6 sm:px-6 lg:px-8">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center">
-                  <div className="relative">
-                    <div className="absolute inset-0 bg-primary-600 rounded-lg animate-pulse-slow opacity-75"></div>
-                    <div className="relative bg-primary-600 text-white p-3 rounded-lg animate-glow">
-                      <i className="fas fa-robot text-2xl"></i>
-                    </div>
-                  </div>
-                  <div className="ml-4">
-                    <h1 className={`text-3xl font-bold ${darkMode ? 'text-white' : 'text-gray-900'} typing-animation`}>
-                      JupyBot AI
-                    </h1>
-                    <p className={`text-sm ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>
-                      Advanced URL Content Processor
-                    </p>
-                  </div>
-                </div>
-                
-                <div className="flex items-center space-x-4">
-                  <button
-                    onClick={() => setDarkMode(!darkMode)}
-                    className={`p-2 rounded-full transition-colors ${darkMode ? 'bg-yellow-400 text-yellow-900' : 'bg-gray-200 text-gray-700'} hover:scale-110 transform`}
-                  >
-                    <i className={`fas ${darkMode ? 'fa-sun' : 'fa-moon'}`}></i>
-                  </button>
-                  <div className="flex items-center space-x-2">
-                    <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
-                    <span className={`text-sm ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>Online</span>
-                  </div>
-                </div>
+                <h1 className="ml-3 text-2xl font-bold text-gray-900">JupyBot AI URLs Analyzer</h1>
               </div>
             </div>
           </header>
 
-          {/* Stats Section */}
-          <section className="py-8">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <StatCard 
-                  icon="fas fa-link" 
-                  value={stats.processed} 
-                  label="URLs Processed" 
-                  color="primary"
-                />
-                <StatCard 
-                  icon="fas fa-clock" 
-                  value={stats.saved} 
-                  label="Hours Saved" 
-                  color="green"
-                />
-                <StatCard 
-                  icon="fas fa-chart-line" 
-                  value={stats.accuracy} 
-                  label="Accuracy %" 
-                  color="purple"
-                />
-              </div>
-            </div>
-          </section>
-
-          {/* Main Content */}
-          <main className="pb-16">
-            <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-              <div className={`${darkMode ? 'bg-dark-800' : 'bg-white'} shadow-2xl rounded-2xl overflow-hidden card-hover`}>
-                
-                {/* Form Section */}
-                <div className="p-8">
-                  <div className="text-center mb-8">
-                    <h2 className={`text-2xl font-bold ${darkMode ? 'text-white' : 'text-gray-900'} mb-2`}>
-                      Process URLs & Extract Insights
-                    </h2>
-                    <p className={`${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>
-                      Leverage AI to analyze, summarize, and extract valuable insights from web content
-                    </p>
-                  </div>
+          <main className="flex-grow">
+            <div className="max-w-3xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
+              <div className="bg-white shadow rounded-lg overflow-hidden">
+                <div className="p-6 border-b border-gray-200">
+                  <h2 className="text-lg font-medium text-gray-900">Process URLs & Content</h2>
+                  <p className="mt-1 text-sm text-gray-500">Enter up to 3 URLs and a question to analyze the content.</p>
                   
-                  <form onSubmit={handleSubmit} className="space-y-6">
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                      {[1, 2, 3].map((num) => (
-                        <div key={num} className="space-y-2">
-                          <label className={`block text-sm font-medium ${darkMode ? 'text-gray-200' : 'text-gray-700'}`}>
-                            URL {num} {num === 1 && <span className="text-red-500">*</span>}
-                          </label>
-                          <div className="relative group">
-                            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                              <i className={`fas fa-link ${darkMode ? 'text-gray-400' : 'text-gray-500'} group-focus-within:text-primary-500 transition-colors`}></i>
-                            </div>
-                            <input
-                              type="url"
-                              value={num === 1 ? url1 : num === 2 ? url2 : url3}
-                              onChange={(e) => {
-                                if (num === 1) setUrl1(e.target.value);
-                                else if (num === 2) setUrl2(e.target.value);
-                                else setUrl3(e.target.value);
-                              }}
-                              className={`block w-full pl-10 pr-3 py-3 border-2 rounded-lg transition-all duration-300 focus:ring-2 focus:ring-primary-500 focus:border-primary-500 ${
-                                darkMode 
-                                  ? 'bg-dark-700 border-dark-600 text-white placeholder-gray-400' 
-                                  : 'bg-white border-gray-300 text-gray-900 placeholder-gray-500'
-                              }`}
-                              placeholder="https://example.com"
-                            />
+                  <form onSubmit={handleSubmit} className="mt-6 space-y-6">
+                    {[url1, url2, url3].map((url, index) => (
+                      <div key={index}>
+                        <label htmlFor={`url${index + 1}`} className="block text-sm font-medium text-gray-700">URL {index + 1}</label>
+                        <div className="mt-1 relative rounded-md shadow-sm">
+                          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <i className="fas fa-link text-gray-500 sm:text-sm"></i>
                           </div>
+                          <input
+                            type="url"
+                            id={`url${index + 1}`}
+                            value={[url1, url2, url3][index]}
+                            onChange={(e) => [setUrl1, setUrl2, setUrl3][index](e.target.value)}
+                            className="focus:ring-primary-500 focus:border-primary-500 block w-full pl-10 pr-3 py-2 border-gray-300 rounded-md"
+                            placeholder="https://example.com"
+                          />
                         </div>
-                      ))}
-                    </div>
+                      </div>
+                    ))}
 
-                    <div className="space-y-2">
-                      <label className={`block text-sm font-medium ${darkMode ? 'text-gray-200' : 'text-gray-700'}`}>
-                        Your Question or Analysis Request
-                      </label>
-                      <div className="relative">
+                    <div>
+                      <label htmlFor="question" className="block text-sm font-medium text-gray-700">Your Question</label>
+                      <div className="mt-1">
                         <textarea
+                          id="question"
                           value={question}
                           onChange={(e) => setQuestion(e.target.value)}
-                          className={`block w-full px-4 py-3 border-2 rounded-lg transition-all duration-300 focus:ring-2 focus:ring-primary-500 focus:border-primary-500 ${
-                            darkMode 
-                              ? 'bg-dark-700 border-dark-600 text-white placeholder-gray-400' 
-                              : 'bg-white border-gray-300 text-gray-900 placeholder-gray-500'
-                          }`}
-                          placeholder="What insights would you like me to extract? E.g., 'Summarize the main points', 'Compare the arguments', 'Extract key statistics'..."
+                          className="shadow-sm focus:ring-primary-500 focus:border-primary-500 block w-full sm:text-sm border-gray-300 rounded-md"
+                          placeholder="e.g., What is the main topic of these URLs?"
                           rows={4}
                         />
                       </div>
-                      <p className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>
-                        Leave blank for automatic content analysis and summarization
-                      </p>
+                      <p className="mt-2 text-sm text-gray-500">Leave blank for a general summary.</p>
                     </div>
 
-                    <div className="flex flex-col sm:flex-row gap-4 justify-between">
-                      <button
-                        type="button"
-                        onClick={clearForm}
-                        className={`px-6 py-3 border-2 rounded-lg font-medium transition-all duration-300 ${
-                          darkMode 
-                            ? 'border-dark-600 text-gray-300 hover:bg-dark-700' 
-                            : 'border-gray-300 text-gray-700 hover:bg-gray-50'
-                        }`}
-                      >
-                        <i className="fas fa-redo mr-2"></i>
-                        Clear Form
-                      </button>
-                      
+                    <div className="flex justify-end">
                       <button
                         type="submit"
                         disabled={loading}
-                        className="px-8 py-3 bg-gradient-to-r from-primary-600 to-purple-600 text-white font-medium rounded-lg shadow-lg hover:from-primary-700 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 disabled:opacity-50 disabled:cursor-not-allowed transform hover:scale-105 transition-all duration-300"
+                        className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 disabled:bg-primary-400 disabled:cursor-not-allowed"
                       >
                         {loading ? (
                           <>
-                            <div className="flex items-center">
-                              <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-3"></div>
-                              <span>Processing Magic...</span>
-                            </div>
+                            <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                              <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                            </svg>
+                            Processing...
                           </>
                         ) : (
-                          <>
-                            <i className="fas fa-magic mr-2"></i>
-                            Analyze Content
-                          </>
+                          <>Analyze Content</>
                         )}
                       </button>
                     </div>
                   </form>
                 </div>
 
-                {/* Results Section */}
-                <div className={`${darkMode ? 'bg-dark-700' : 'bg-gray-50'} px-8 py-6`}>
+                {/* Output Section */}
+                <div className="bg-gray-50 px-6 py-4">
                   {error && (
-                    <div className="animate-slide-up mb-6">
-                      <div className="rounded-lg bg-red-50 p-4 border-l-4 border-red-400">
-                        <div className="flex">
-                          <div className="flex-shrink-0">
-                            <i className="fas fa-exclamation-triangle text-red-400 text-lg"></i>
-                          </div>
-                          <div className="ml-3">
-                            <h3 className="text-sm font-medium text-red-800">Processing Error</h3>
-                            <div className="mt-2 text-sm text-red-700">
-                              <p>{error}</p>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
+                    <div className="rounded-md bg-red-50 p-4 mb-4">
+                      <p className="text-sm text-red-700 font-semibold">{error}</p>
                     </div>
                   )}
-
                   {result && (
-                    <div className="animate-slide-up">
-                      <div className="rounded-lg bg-gradient-to-r from-green-50 to-blue-50 p-6 border-l-4 border-green-400">
-                        <div className="flex items-start">
-                          <div className="flex-shrink-0">
-                            <div className="flex items-center justify-center w-8 h-8 bg-green-100 rounded-full">
-                              <i className="fas fa-check text-green-600"></i>
-                            </div>
-                          </div>
-                          <div className="ml-4 flex-grow">
-                            <div className="flex items-center justify-between mb-3">
-                              <h3 className="text-lg font-semibold text-green-800">
-                                <i className="fas fa-brain mr-2"></i>
-                                AI Analysis Complete
-                              </h3>
-                              <div className="flex space-x-2">
-                                <button 
-                                  onClick={() => navigator.clipboard.writeText(result)}
-                                  className="px-3 py-1 bg-green-100 text-green-700 rounded-full text-xs font-medium hover:bg-green-200 transition-colors"
-                                >
-                                  <i className="fas fa-copy mr-1"></i>
-                                  Copy
-                                </button>
-                                <button className="px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-xs font-medium hover:bg-blue-200 transition-colors">
-                                  <i className="fas fa-download mr-1"></i>
-                                  Export
-                                </button>
-                              </div>
-                            </div>
-                            <div className={`prose prose-sm max-w-none ${darkMode ? 'prose-invert' : ''}`}>
-                              <div className="bg-white rounded-lg p-4 shadow-sm border">
-                                <pre className="whitespace-pre-wrap text-sm text-gray-700 font-sans leading-relaxed">
-                                  {result}
-                                </pre>
-                              </div>
-                            </div>
-                            <div className="mt-4 flex items-center text-xs text-gray-500">
-                              <i className="fas fa-clock mr-1"></i>
-                              <span>Processed in 2.3 seconds</span>
-                              <span className="mx-2">•</span>
-                              <i className="fas fa-shield-alt mr-1"></i>
-                              <span>Secure & Private</span>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  )}
-
-                  {!result && !error && !loading && (
-                    <div className="text-center py-12">
-                      <div className="relative">
-                        <div className="absolute inset-0 flex items-center justify-center">
-                          <div className="w-32 h-32 bg-primary-100 rounded-full opacity-20 animate-ping"></div>
-                        </div>
-                        <div className="relative">
-                          <i className={`fas fa-robot text-6xl ${darkMode ? 'text-gray-600' : 'text-gray-400'} mb-4`}></i>
-                          <p className={`text-lg ${darkMode ? 'text-gray-400' : 'text-gray-500'} mb-2`}>
-                            Ready to analyze your content
-                          </p>
-                          <p className={`text-sm ${darkMode ? 'text-gray-500' : 'text-gray-400'}`}>
-                            Enter URLs and click "Analyze Content" to get started
-                          </p>
-                        </div>
-                      </div>
+                    <div className="rounded-md bg-green-50 p-4 whitespace-pre-wrap text-green-700">
+                      <h3 className="font-bold text-sm mb-1">Analysis Result</h3>
+                      {result}
                     </div>
                   )}
                 </div>
@@ -547,83 +184,11 @@ This analysis was completed using advanced NLP processing and machine learning a
             </div>
           </main>
 
-          {/* Features Section */}
-          <section className="py-16 bg-gradient-to-br from-primary-50 to-purple-50">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-              <div className="text-center mb-12">
-                <h2 className="text-3xl font-bold text-gray-900 mb-4">
-                  Why Choose JupyBot AI?
-                </h2>
-                <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-                  Harness the power of advanced AI to transform how you consume and analyze web content
-                </p>
-              </div>
-              
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <FeatureCard 
-                  icon="fas fa-lightning-bolt"
-                  title="Lightning Fast"
-                  description="Process multiple URLs simultaneously with our optimized AI engine for instant results."
-                />
-                <FeatureCard 
-                  icon="fas fa-brain"
-                  title="Smart Analysis"
-                  description="Advanced NLP algorithms understand context and extract meaningful insights from complex content."
-                />
-                <FeatureCard 
-                  icon="fas fa-shield-alt"
-                  title="Secure & Private"
-                  description="Your data is encrypted and never stored. Complete privacy guaranteed for all processing."
-                />
-                <FeatureCard 
-                  icon="fas fa-chart-line"
-                  title="Detailed Insights"
-                  description="Get comprehensive summaries, key points, and actionable insights from any web content."
-                />
-                <FeatureCard 
-                  icon="fas fa-mobile-alt"
-                  title="Mobile Optimized"
-                  description="Works seamlessly across all devices with our responsive design and touch-friendly interface."
-                />
-                <FeatureCard 
-                  icon="fas fa-globe"
-                  title="Multi-Language"
-                  description="Support for 50+ languages with automatic detection and translation capabilities."
-                />
-              </div>
-            </div>
-          </section>
-
-          {/* Footer */}
-          <footer className={`${darkMode ? 'bg-dark-800 border-dark-700' : 'bg-white border-gray-200'} border-t`}>
-            <div className="max-w-7xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
-              <div className="flex flex-col md:flex-row items-center justify-between">
-                <div className="flex items-center mb-4 md:mb-0">
-                  <div className="bg-primary-600 text-white p-2 rounded-lg mr-3">
-                    <i className="fas fa-robot"></i>
-                  </div>
-                  <div>
-                    <p className={`text-sm font-medium ${darkMode ? 'text-white' : 'text-gray-900'}`}>
-                      &copy; {new Date().getFullYear()} JupyBot AI Processor
-                    </p>
-                    <p className={`text-xs ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>
-                      Powered by Advanced AI Technology
-                    </p>
-                  </div>
-                </div>
-                
-                <div className="flex items-center space-x-6">
-                  <a href="#" className={`text-sm ${darkMode ? 'text-gray-400 hover:text-white' : 'text-gray-500 hover:text-gray-900'} transition-colors`}>
-                    Privacy Policy
-                  </a>
-                  <a href="#" className={`text-sm ${darkMode ? 'text-gray-400 hover:text-white' : 'text-gray-500 hover:text-gray-900'} transition-colors`}>
-                    Terms of Service
-                  </a>
-                  <a href="#" className={`text-sm ${darkMode ? 'text-gray-400 hover:text-white' : 'text-gray-500 hover:text-gray-900'} transition-colors`}>
-                    API Documentation
-                  </a>
-                </div>
-              </div>
+          <footer className="bg-white border-t border-gray-200">
+            <div className="max-w-7xl mx-auto px-4 py-4 sm:px-6 lg:px-8">
+              <p className="text-center text-sm text-gray-500">
+                &copy; {new Date().getFullYear()} JupyBot AI Processor. All rights reserved.
+              </p>
             </div>
           </footer>
         </div>
@@ -632,3 +197,12 @@ This analysis was completed using advanced NLP processing and machine learning a
 
     const root = ReactDOM.createRoot(document.getElementById("root"));
     root.render(<App />);
+  </script>
+</body>
+</html>
+<script>
+  // Ensure the app is loaded after the DOM is fully ready
+  document.addEventListener("DOMContentLoaded", function() {
+    const root = ReactDOM.createRoot(document.getElementById("root"));
+    root.render(<App />);
+  });
